@@ -10,6 +10,8 @@ const refs = {
   themeToggle: document.querySelector('.theme-switch__toggle'),
 };
 
+refs.themeToggle.addEventListener('click', onThemeToggleClick);
+
 if (localStorage.getItem(THEMESWITCHSTATE)) {
   refs.themeToggle.checked = JSON.parse(localStorage.getItem(THEMESWITCHSTATE));
 }
