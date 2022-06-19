@@ -3,25 +3,32 @@ const Theme = {
   LIGHT: 'light-theme',
   DARK: 'dark-theme',
 };
-const THEMESTATE = 'theme-switch-state';
+const THEMESWITCHSTATE = 'theme-switch-state';
 
 const refs = {
   cardList: document.querySelector('.js-menu'),
   themeToggle: document.querySelector('.theme-switch__toggle'),
 };
 
-refs.themeToggle.addEventListener('click', onThemeToggleClick);
+if (localStorage.getItem(THEMESWITCHSTATE)) {
+  refs.themeToggle.checked = JSON.parse(localStorage.getItem(THEMESWITCHSTATE));
+}
 
-document.body.classList = localStorage.getItem(THEMESTATE) || Theme.LIGHT;
-refs.themeToggle.checked = document.body.classList.contains(Theme.DARK);
+setBodyTheme(refs.themeToggle.checked);
 
 function onThemeToggleClick(e) {
-  if (e.target.checked) {
-    document.body.classList = Theme.DARK;
+  setBodyTheme(e.target.checked);
+  localStorage.setItem(THEMESWITCHSTATE, e.target.checked);
+}
+
+function setBodyTheme(switchState) {
+  if (switchState) {
+    document.body.classList.add(Theme.DARK);
+    document.body.classList.remove(Theme.LIGHT);
   } else {
-    document.body.classList = Theme.LIGHT;
+    document.body.classList.add(Theme.LIGHT);
+    document.body.classList.remove(Theme.DARK);
   }
-  localStorage.setItem(THEMESTATE, document.body.classList);
 }
 
 refs.cardList.insertAdjacentHTML('afterbegin', makeCards());
